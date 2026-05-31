@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-base: #05060F;
+  color-scheme: dark;
+}
+
+html, body {
+  background: #05060F;
+  color: #E6E8F2;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+body {
+  position: relative;
+  z-index: 0;
+  min-height: 100vh;
+}
+
+@layer utilities {
+  .text-gradient-cyber {
+    background-image: linear-gradient(90deg, #67E8F9 0%, #A855F7 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .text-gradient-mastery {
+    background-image: linear-gradient(90deg, #22D3EE 0%, #818CF8 50%, #A855F7 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .ring-neon-cyan { box-shadow: inset 0 0 0 1px rgba(34,211,238,0.5), 0 0 20px rgba(34,211,238,0.35); }
+  .ring-neon-purple { box-shadow: inset 0 0 0 1px rgba(168,85,247,0.5), 0 0 20px rgba(168,85,247,0.35); }
+  .ring-neon-green { box-shadow: inset 0 0 0 1px rgba(34,197,94,0.5), 0 0 20px rgba(34,197,94,0.35); }
+  .ring-neon-amber { box-shadow: inset 0 0 0 1px rgba(245,158,11,0.55), 0 0 24px rgba(245,158,11,0.4); }
+  /* PERF: backdrop-filter was applied to every panel — dozens on screen — and is
+     one of the most expensive composite ops in WebKit/Blink. We use opaque-enough
+     gradients instead. Same look, ~no GPU cost. */
+  .panel {
+    background: linear-gradient(180deg, rgba(15,20,48,0.96) 0%, rgba(11,14,31,0.96) 100%);
+    border: 1px solid rgba(99,102,241,0.12);
+  }
+  .panel-soft {
+    background: rgba(15,20,48,0.72);
+    border: 1px solid rgba(99,102,241,0.08);
+  }
+  /* For below-the-fold sections — skip layout + paint until they scroll into view. */
+  .cv-auto { content-visibility: auto; contain-intrinsic-size: 480px; }
+}
+
+/* Starfield + radial cosmic background */
+.cosmic-bg {
+  position: fixed; inset: 0; z-index: -1;
+  pointer-events: none !important;
+  background:
+    radial-gradient(1200px 600px at 20% -10%, rgba(124,58,237,0.18), transparent 60%),
+    radial-gradient(900px 500px at 100% 10%, rgba(34,211,238,0.10), transparent 60%),
+    radial-gradient(800px 600px at 50% 110%, rgba(99,102,241,0.18), transparent 60%),
+    #05060F;
+}
+.cosmic-bg *, .cosmic-bg::before, .cosmic-bg::after {
+  pointer-events: none !important;
+}
+/* Single static starfield layer — keeps the cosmic mood without a second compositor
+   layer + animation. Reduces paint cost on lower-end devices substantially. */
+.cosmic-bg::before {
+  content: ""; position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 12% 22%, rgba(255,255,255,0.55) 50%, transparent 51%),
+    radial-gradient(1px 1px at 26% 64%, rgba(255,255,255,0.45) 50%, transparent 51%),
+    radial-gradient(1px 1px at 47% 14%, rgba(255,255,255,0.5) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 67% 41%, rgba(255,255,255,0.55) 50%, transparent 51%),
+    radial-gradient(1px 1px at 83% 70%, rgba(255,255,255,0.45) 50%, transparent 51%),
+    radial-gradient(1px 1px at 91% 19%, rgba(255,255,255,0.5) 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 8% 86%, rgba(255,255,255,0.5) 50%, transparent 51%),
+    radial-gradient(1px 1px at 36% 89%, rgba(255,255,255,0.45) 50%, transparent 51%),
+    radial-gradient(1px 1px at 58% 78%, rgba(167,139,250,0.55) 50%, transparent 51%),
+    radial-gradient(1.4px 1.4px at 72% 8%, rgba(103,232,249,0.6) 50%, transparent 51%);
+  opacity: 0.6;
+}
+
+/* Drift animation is opt-in — only when the user hasn't requested reduced motion AND
+   isn't on a small screen (mobile compositor cost). */
+@media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
+  .cosmic-bg::before {
+    animation: starDrift 90s linear infinite;
+    will-change: transform;
+  }
+  @keyframes starDrift {
+    0%   { transform: translate3d(0,   0,    0); }
+    100% { transform: translate3d(-1.2%, 2.5%, 0); }
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.25); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.45); }
