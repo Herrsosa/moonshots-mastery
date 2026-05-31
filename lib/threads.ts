@@ -66,6 +66,11 @@ const WHAT_CHANGED: Record<string, Record<string, string>> = {
   "musk-vs-altman": {
     markets: "OpenAI's $852B raise sets the pace for the IPO-window land grab.",
   },
+  "vatican-ai-layoffs-moon": {
+    models: "The fight shifts from capability to anthropology — what AI IS, not just what it does.",
+    anthropic: "Anthropic projected to pass Alphabet's revenue by 2028 — lab becomes hyperscaler-scale.",
+    spacex: "Starlink extends to gigabit lunar links — the interplanetary internet begins.",
+  },
 };
 
 /**

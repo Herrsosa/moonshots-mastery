@@ -12,8 +12,21 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
  *   NEXT_PUBLIC_SUPABASE_URL
  *   NEXT_PUBLIC_SUPABASE_ANON_KEY
  */
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+// Normalize the URL defensively. The #1 magic-link failure ("Invalid path
+// specified in request URL") comes from pasting the Supabase *dashboard* URL
+// (https://supabase.com/dashboard/project/<ref>) instead of the API URL
+// (https://<ref>.supabase.co), or leaving a trailing slash. We strip the slash
+// and, if a dashboard URL slipped in, rewrite it to the correct API origin.
+function normalizeSupabaseUrl(raw: string | undefined): string | undefined {
+  if (!raw) return raw;
+  let u = raw.trim().replace(/\/+$/, "");
+  const dash = u.match(/supabase\.com\/dashboard\/project\/([a-z0-9]+)/i);
+  if (dash) u = `https://${dash[1]}.supabase.co`;
+  return u;
+}
+
+const url = normalizeSupabaseUrl(process.env.NEXT_PUBLIC_SUPABASE_URL);
+const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
 
 export const isSupabaseConfigured = Boolean(url && anon);
 

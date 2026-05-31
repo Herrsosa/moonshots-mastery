@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import { Search, Volume2, VolumeX, RotateCcw } from "lucide-react";
+import { Search, Volume2, VolumeX } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { HexLevel } from "@/components/primitives/HexLevel";
 import { StreakFlame } from "@/components/primitives/StreakFlame";
@@ -45,21 +45,6 @@ export function Topbar() {
         className="size-9 rounded-xl panel-soft grid place-items-center text-ink-dim hover:text-ink transition-colors"
       >
         {muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          if (confirm("Reset progress and replay the intro tour? (Demo only)")) {
-            try { localStorage.removeItem("pm:onboarded:v1"); } catch {}
-            useStore.getState().resetProgress();
-            location.reload();
-          }
-        }}
-        title="Reset demo state — replays onboarding"
-        aria-label="Reset demo state"
-        className="size-9 rounded-xl panel-soft grid place-items-center text-ink-dim hover:text-ink transition-colors"
-      >
-        <RotateCcw size={16} />
       </button>
       <StreakFlame days={liveStreak} />
       <div className="flex items-center gap-3 panel rounded-xl px-3.5 py-2 min-w-[280px]">

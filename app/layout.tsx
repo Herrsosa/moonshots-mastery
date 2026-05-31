@@ -6,6 +6,7 @@ import { Topbar } from "@/components/nav/Topbar";
 import { Onboarding } from "@/components/onboarding/Onboarding";
 import { CommandPalette } from "@/components/nav/CommandPalette";
 import { AuthProvider } from "@/lib/auth";
+import { AuthGate } from "@/components/auth/AuthGate";
 import { ProgressSync } from "@/components/sync/ProgressSync";
 
 export const metadata: Metadata = {
@@ -26,16 +27,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen">
         <AuthProvider>
           <div className="cosmic-bg" aria-hidden />
-          <div className="relative z-10 flex min-h-screen">
-            <Sidebar />
-            <div className="flex-1 flex flex-col min-w-0">
-              <Topbar />
-              <main className="flex-1 pb-24 md:pb-6">{children}</main>
+          <AuthGate>
+            <div className="relative z-10 flex min-h-screen">
+              <Sidebar />
+              <div className="flex-1 flex flex-col min-w-0">
+                <Topbar />
+                <main className="flex-1 pb-24 md:pb-6">{children}</main>
+              </div>
             </div>
-          </div>
-          <MobileTabBar />
-          <Onboarding />
-          <CommandPalette />
+            <MobileTabBar />
+            <Onboarding />
+            <CommandPalette />
+          </AuthGate>
           <ProgressSync />
         </AuthProvider>
       </body>

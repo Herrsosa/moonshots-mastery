@@ -4,8 +4,6 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import type { UserState, MissionAttempt } from "./types";
 import { scheduleReview } from "./review";
 
-const DAY_MS = 24 * 60 * 60 * 1000;
-
 interface Store extends UserState {
   completeMission: (
     missionId: string,
@@ -37,38 +35,17 @@ export function selectPersistable(s: UserState): UserState {
   };
 }
 
+// Clean slate. Every new account (and every fresh browser) starts at zero —
+// no seeded demo progress. Level 1, no XP, no mastered episodes. This is the
+// correct baseline for a real multi-user app: progress is earned, not gifted.
 const INITIAL_USER_STATE: UserState = {
-  level: 17,
-  xp: 24680,
-  xpToNext: 30000,
-  streak: 12,
+  level: 1,
+  xp: 0,
+  xpToNext: 1000,
+  streak: 0,
   lastActive: new Date().toISOString(),
-  missions: {
-    // Two cleanly mastered episodes — mastered is permanent, no review debt.
-    "sinclair-longevity-pill": {
-      score: 92,
-      weakConcepts: [],
-      perQuestion: [],
-      attempts: 2,
-      completedAt: new Date(Date.now() - 9 * DAY_MS).toISOString(),
-    },
-    "sinclair-glp1-ai": {
-      score: 86,
-      weakConcepts: [],
-      perQuestion: [],
-      attempts: 1,
-      completedAt: new Date(Date.now() - 1 * DAY_MS).toISOString(),
-    },
-    // In-progress (below mastery) — shows in the "continue" slot of Today's Session.
-    "dara-robotaxi": {
-      score: 64,
-      weakConcepts: ["20+ AV partners", "Marriott-style asset-light fleet model"],
-      perQuestion: [],
-      attempts: 1,
-      completedAt: new Date(Date.now() - 2 * DAY_MS).toISOString(),
-    },
-  },
-  badges: ["Age-Reversal Scout", "AI Longevity Tactician"],
+  missions: {},
+  badges: [],
 };
 
 export const useStore = create<Store>()(
@@ -128,7 +105,7 @@ export const useStore = create<Store>()(
         }),
     }),
     {
-      name: "podcast-mastery-v4",
+      name: "moonshots-mastery-v5",
       storage: createJSONStorage(() => (typeof window !== "undefined" ? localStorage : (undefined as never))),
       onRehydrateStorage: () => (state) => state?._markHydrated(),
     }
