@@ -14,15 +14,24 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
  */
 // Normalize the URL defensively. The #1 magic-link failure ("Invalid path
 // specified in request URL") comes from pasting the Supabase *dashboard* URL
-// (https://supabase.com/dashboard/project/<ref>) instead of the API URL
-// (https://<ref>.supabase.co), or leaving a trailing slash. We strip the slash
-// and, if a dashboard URL slipped in, rewrite it to the correct API origin.
+// supabase-js wants the bare project ORIGIN (https://<ref>.supabase.co). Common
+// mistakes that break auth with a 404:
+//   • the dashboard URL  → https://supabase.com/dashboard/project/<ref>
+//   • the REST URL       → https://<ref>.supabase.co/rest/v1   (yields /rest/v1/auth/v1/otp)
+//   • a trailing slash
+// We rewrite a dashboard URL to the API host, then collapse EVERYTHING to the
+// origin so any leftover path (/rest/v1, etc.), query, or slash is dropped.
 function normalizeSupabaseUrl(raw: string | undefined): string | undefined {
   if (!raw) return raw;
-  let u = raw.trim().replace(/\/+$/, "");
+  let u = raw.trim();
   const dash = u.match(/supabase\.com\/dashboard\/project\/([a-z0-9]+)/i);
-  if (dash) u = `https://${dash[1]}.supabase.co`;
-  return u;
+  if (dash) return `https://${dash[1]}.supabase.co`;
+  if (!/^https?:\/\//i.test(u)) u = `https://${u}`;
+  try {
+    return new URL(u).origin; // drops /rest/v1, query strings, and trailing slashes
+  } catch {
+    return u.replace(/\/+$/, "");
+  }
 }
 
 const url = normalizeSupabaseUrl(process.env.NEXT_PUBLIC_SUPABASE_URL);
