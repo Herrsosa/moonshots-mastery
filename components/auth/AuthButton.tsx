@@ -53,7 +53,7 @@ export function AuthButton({ variant = "sidebar" }: { variant?: "sidebar" | "top
           }
           style={{ color: "#05060F" }}
         >
-          <LogIn size={15} /> Sign in to save progress
+          <LogIn size={15} /> {variant === "topbar" ? "Sign in" : "Sign in to save progress"}
         </button>
       )}
 

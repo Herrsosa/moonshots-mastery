@@ -8,6 +8,7 @@ import { XPBar } from "@/components/primitives/XPBar";
 import { Counter } from "@/components/primitives/Counter";
 import { computeStreak } from "@/lib/streak";
 import { isMuted, setMuted } from "@/lib/sounds";
+import { AuthButton } from "@/components/auth/AuthButton";
 
 export function Topbar() {
   const { level, xp, xpToNext, streak: seedStreak, missions, hydrated } = useStore();
@@ -73,7 +74,7 @@ export function Topbar() {
           <XPBar xp={xp} max={xpToNext} />
         </div>
       </div>
-      <div className="size-9 rounded-full grid place-items-center bg-gradient-to-br from-cyan-500/30 to-purple-500/30 ring-1 ring-white/10 text-[11px] font-bold">JD</div>
+      <AuthButton variant="topbar" />
     </header>
   );
 }

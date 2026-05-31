@@ -1,10 +1,11 @@
 "use client";
 import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
-import { Sparkles, ListOrdered, LayoutGrid } from "lucide-react";
+import { ListOrdered, LayoutGrid } from "lucide-react";
 import { TechTree } from "@/components/tree/TechTree";
 import { Legend } from "@/components/tree/Legend";
 import { EpisodeTimeline } from "@/components/timeline/EpisodeTimeline";
+import { AuthButton } from "@/components/auth/AuthButton";
 import { MicLogo } from "@/components/primitives/MicLogo";
 import { HexLevel } from "@/components/primitives/HexLevel";
 import { useStore } from "@/lib/store";
@@ -52,9 +53,7 @@ export default function HomePage() {
             <div className="text-[11px] text-ink-dim">Master the Moonshots feed</div>
           </div>
         </div>
-        <button className="size-10 rounded-xl panel grid place-items-center">
-          <Sparkles size={18} className="text-purple-300" />
-        </button>
+        <AuthButton variant="topbar" />
       </div>
 
       {/* Mobile XP card */}
