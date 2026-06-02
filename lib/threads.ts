@@ -71,6 +71,12 @@ const WHAT_CHANGED: Record<string, Record<string, string>> = {
     anthropic: "Anthropic projected to pass Alphabet's revenue by 2028 — lab becomes hyperscaler-scale.",
     spacex: "Starlink extends to gigabit lunar links — the interplanetary internet begins.",
   },
+  "opus48-openai-foundation-agi2029": {
+    anthropic: "Opus 4.8 retakes the coding crown — the lead now flips on a ~6-week cadence.",
+    models: "Benchmarks saturate; the frontier pivots to unsolved problems and a 2029 AGI debate.",
+    markets: "OpenAI's nonprofit foundation (~$220B) becomes the largest on Earth — and the UBI backstop question.",
+    "ai-usage": "Token prices keep collapsing as cognition goes abundant; tokens stop being the right unit.",
+  },
 };
 
 /**

@@ -24,6 +24,7 @@ import { googleIoKarpathyCerebras } from "./google-io-karpathy-cerebras";
 import { spacex75bIpoGpt55Erdos } from "./spacex-75b-ipo-gpt55-erdos";
 import { organizationalSingularity } from "./organizational-singularity";
 import { vaticanAiLayoffsMoon } from "./vatican-ai-layoffs-moon";
+import { opus48OpenaiFoundationAgi2029 } from "./opus48-openai-foundation-agi2029";
 
 /**
  * Full Moonshots catalog — 15 episodes, all authored from real transcripts.
@@ -58,6 +59,7 @@ export const ALL_MISSIONS: Mission[] = [
   spacex75bIpoGpt55Erdos,
   organizationalSingularity,
   vaticanAiLayoffsMoon,
+  opus48OpenaiFoundationAgi2029,
 ].sort((a, b) => b.releasedDate.localeCompare(a.releasedDate));
 
 export const MISSION_BY_ID: Record<string, Mission> = Object.fromEntries(
